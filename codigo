@@ -1,0 +1,29 @@
+function [L,U,x]= metodo_cholesky(A,b)
+  n=length(b);
+
+for k=1:n
+    Acumulador = 0;
+    for p=1:k-1
+        Acumulador = Acumulador + L(k,p)*U(p,k);
+    end
+    L(k,k)= sqrt(A(k,k)- Acumulador);
+    U(k,k) = L(k,k);
+    
+    for i=k:n
+        Acumulador2 = 0;
+        for p=1:k-1
+            Acumulador2= Acumulador2 + L(i,p)*U(p,k);
+        end
+        L(i,k) = (A(i,k)- Acumulador2)/L(k,k);
+    end
+    for j= k:n
+        Acumulador3 = 0;
+        for p = 1:k-1
+            Acumulador3 = Acumulador3 + L(k,p)*U(p,j);
+        end
+        U(k,j)= (A(k,j)- Acumulador3)/L(k,k);
+    end   
+    
+end
+x=U\(L\b);
+end
